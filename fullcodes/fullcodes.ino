@@ -1,12 +1,12 @@
 #include <Wire.h> 
 #include <LiquidCrystal_I2C.h>
 #include <SoftwareSerial.h>
-SoftwareSerial sim(10, 11);
-#define MQ2pin (0)
+SoftwareSerial sim(11, 10);
+#define MQ2pin (A0)
 LiquidCrystal_I2C lcd(0x27,20,4);
 int _timeout;
 String _buffer;
-String number = "+250788750979";
+String number = "0788750979";
 
 int green = 3;
 int red = 4;
@@ -14,9 +14,10 @@ int buzzer = 5;
 int valve = 12;
 
 float sensorValue;
-int sensorThreshold = 0,pstatus=0;
+int sensorThreshold = 400,pstatus=0;
 void setup() {
   Serial.begin(9600);
+  sim.begin(9600);
   _buffer.reserve(50);
   pinMode(green, OUTPUT);
   pinMode(red, OUTPUT);
@@ -48,6 +49,7 @@ void loop() {
   digitalWrite(red, LOW);
   digitalWrite(green, HIGH);
   noTone(buzzer);
+  delay(1000);
   if (sensorValue > sensorThreshold && pstatus==0)
   {
     lcd.clear();
